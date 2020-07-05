@@ -294,7 +294,8 @@ class DocManager(DocManagerBase):
         """Apply updates given in update_spec to the document whose id
         matches that of doc.
         """
-
+        if "Groups" in namespace:
+            LOG.error("DEBUGG:: es update groups _id: %s" % document_id)
         index, doc_type = self._index_and_mapping(namespace)
         with self.lock:
             # Check if document source is stored in local buffer
@@ -324,7 +325,8 @@ class DocManager(DocManagerBase):
         # No need to duplicate '_id' in source document
         doc_id = str(doc.pop("_id"))
         metadata = {"ns": namespace, "_ts": timestamp}
-
+        if "Groups" in namespace:
+            LOG.error("DEBUGG:: es upsert groups _id: %s" % doc_id)
         # Index the source document, using lowercase namespace as index name.
         action = {
             "_op_type": "index",
@@ -352,6 +354,8 @@ class DocManager(DocManagerBase):
         """Insert multiple documents into Elasticsearch."""
 
         def docs_to_upsert():
+            if "Groups" in namespace:
+                LOG.error("DEBUGG:: es bulk upsert groups _ids: %s" % [x.get("_id") for x in docs])
             doc = None
             for doc in docs:
                 # Remove metadata and redundant _id
@@ -437,7 +441,8 @@ class DocManager(DocManagerBase):
     def remove(self, document_id, namespace, timestamp):
         """Remove a document from Elasticsearch."""
         index, doc_type = self._index_and_mapping(namespace)
-
+        if "Groups" in namespace:
+            LOG.error("DEBUGG:: es remove groups _id: %s" % document_id)
         action = {
             "_op_type": "delete",
             "_index": index,

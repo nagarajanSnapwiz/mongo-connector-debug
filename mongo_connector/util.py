@@ -35,6 +35,7 @@ def exception_wrapper(mapping):
                 return f(*args, **kwargs)
             except Exception:
                 exc_type, exc_value, exc_tb = sys.exc_info()
+                LOG.error("GOT EXCEPTION::", (exc_type, exc_value, exc_tb))
                 new_type = None
                 for src_type in mapping:
                     if issubclass(exc_type, src_type):
@@ -108,6 +109,7 @@ def log_fatal_exceptions(func):
         try:
             func(*args, **kwargs)
         except Exception:
+            LOG.error("GOT FATAL EXCEPTION::", sys.exc_info())
             LOG.exception("Fatal Exception")
             raise
 

@@ -192,7 +192,7 @@ class OplogThread(threading.Thread):
             return True, False
 
         if "Groups" in coll:
-            LOG.error("DEBUGG-:: op: %s, _id: %s" % (entry["op"],entry["o"]["_id"]))
+            LOG.error("DEBUGG:: Groups op: %s, _id: %s" % (entry["op"],entry["o"]["_id"]))
 
         # Update the namespace.
         entry["ns"] = namespace.dest_name
